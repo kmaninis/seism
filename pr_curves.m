@@ -43,13 +43,13 @@
 %clear all;close all;clc;
 
 % Select the database to work on
-database = 'BSDS500';
+database = 'PASCALContext';
 % database = 'PASCALContext';
 % database = 'Pascal';
 % database = 'SBD';
 
 % Write results in format to use latex code?
-writePR = 1; 
+writePR = 0; 
 
 % Use precomputed results or evaluate on your computer?
 USEprecomputed = 1; 

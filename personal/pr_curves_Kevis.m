@@ -44,11 +44,11 @@
 
 
 %database = 'BSDS500';
-%database = 'PASCALContext';
-database = 'Pascal';
+database = 'PASCALContext';
+%database = 'Pascal';
 %database = 'SBD';
 
-writePR = 0; % Write results in format to use latex code?
+writePR = 1; % Write results in format to use latex code?
 USEprecomputed = 1; % Use precomputed results or evaluate on your computer?
 
 % Precision-recall measures
@@ -61,11 +61,11 @@ switch database,
     case 'BSDS500',
         gt_set   = 'test';
         methods(end+1).name = 'HED';             methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-        methods(end+1).name = 'Kokkinos';             methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+        %methods(end+1).name = 'Kokkinos';             methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         %         methods(end+1).name = 'ResNet50_iter_10000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         %         methods(end+1).name = 'ResNet50_iter_15000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         % 		methods(end+1).name = 'ResNet50_iter_20000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-        %         methods(end+1).name = 'ResNet50_iter_25000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+        methods(end+1).name = 'CEDN';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         % 		methods(end+1).name = 'ResNet50_iter_30000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         %         methods(end+1).name = 'ResNet50_iter_35000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         % 		methods(end+1).name = 'ResNet50_iter_40000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
@@ -73,31 +73,46 @@ switch database,
         % 		methods(end+1).name = 'ResNet50_iter_50000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         %         methods(end+1).name = 'ResNet50_iter_55000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         %         methods(end+1).name = 'ResNet50_iter_60000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-        %methods(end+1).name = 'COB';            methods(end).io_func = @read_one_ucm; methods(end).legend = 'COB'; methods(end).type = 'segmentation';
+        methods(end+1).name = 'COB';            methods(end).io_func = @read_one_ucm; methods(end).legend = 'COB'; methods(end).type = 'segmentation';
         
         %% Old methods...
-        methods(end+1).name = 'LEP';              methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
-        methods(end+1).name = 'MCG';              methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
-        methods(end+1).name = 'SE';               methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'contour';
-        methods(end+1).name = 'MShift';           methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
-        methods(end+1).name = 'gPb-UCM';          methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
-        methods(end+1).name = 'ISCRA';            methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
-        methods(end+1).name = 'NCut';             methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
-        methods(end+1).name = 'EGB';              methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+%         methods(end+1).name = 'LEP';              methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+%         methods(end+1).name = 'MCG';              methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+%         methods(end+1).name = 'SE';               methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'contour';
+%         methods(end+1).name = 'MShift';           methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+%         methods(end+1).name = 'gPb-UCM';          methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+%         methods(end+1).name = 'ISCRA';            methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+%         methods(end+1).name = 'NCut';             methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+%         methods(end+1).name = 'EGB';              methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
         
         
     case 'PASCALContext',
         gt_set   = 'test_new';
         
-        methods(end+1).name = 'COB';              methods(end).io_func = @read_one_ucm;      methods(end).legend = 'COB train';        methods(end).type = 'segmentation';
-        methods(end+1).name = 'COB_trainval';     methods(end).io_func = @read_one_ucm;      methods(end).legend = 'COB trainval';     methods(end).type = 'segmentation';
-        methods(end+1).name = 'ResNet50_trainval';methods(end).io_func = @read_one_cont_png; methods(end).legend = 'ResNet50 trainval';methods(end).type = 'contour';
-        methods(end+1).name = 'HED';              methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name;  methods(end).type = 'contour';
-        methods(end+1).name = 'HED_trainval';     methods(end).io_func = @read_one_cont_png; methods(end).legend = 'HED trainval';     methods(end).type = 'contour';
-        methods(end+1).name = 'HED-BSDS500';      methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name;  methods(end).type = 'contour';
-        methods(end+1).name = 'LEP-BSDS500';      methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
-        methods(end+1).name = 'MCG-BSDS500';      methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
-        methods(end+1).name = 'SE-BSDS500';       methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name;  methods(end).type = 'contour';
+        if strcmp(gt_set,'test_new'),
+            %methods(end+1).name = 'COB';              methods(end).io_func = @read_one_ucm;      methods(end).legend = 'COB train';        methods(end).type = 'segmentation';
+            methods(end+1).name = 'COB_trainval';     methods(end).io_func = @read_one_ucm;      methods(end).legend = 'COB trainval';     methods(end).type = 'segmentation';
+            %methods(end+1).name = 'ResNet50_trainval';methods(end).io_func = @read_one_cont_png; methods(end).legend = 'ResNet50 trainval';methods(end).type = 'contour';
+            methods(end+1).name = 'CEDN';             methods(end).io_func = @read_one_cont_png; methods(end).legend = 'CEDN trainval';    methods(end).type = 'contour';
+            methods(end+1).name = 'CEDN_Pascal';             methods(end).io_func = @read_one_cont_png; methods(end).legend = 'CEDN Pascal';    methods(end).type = 'contour';
+            %methods(end+1).name = 'HED';              methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name;  methods(end).type = 'contour';
+            methods(end+1).name = 'HED_trainval';     methods(end).io_func = @read_one_cont_png; methods(end).legend = 'HED trainval';     methods(end).type = 'contour';
+            %methods(end+1).name = 'HED-BSDS500';      methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name;  methods(end).type = 'contour';
+            %methods(end+1).name = 'LEP-BSDS500';      methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+            %methods(end+1).name = 'MCG-BSDS500';      methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+            %methods(end+1).name = 'SE-BSDS500';       methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name;  methods(end).type = 'contour';
+        elseif strcmp(gt_set,'val_new'),
+            % Ablation Analysis of COB paper
+            methods(end+1).name = 'MCG-BSDS500';              methods(end).io_func = @read_one_lep;      methods(end).legend = 'MCG (SE)';         methods(end).type = 'segmentation';
+            methods(end+1).name = 'MCG-HED';                  methods(end).io_func = @read_one_lep;      methods(end).legend = 'MCG (HED)';        methods(end).type = 'segmentation';
+            methods(end+1).name = 'VGGNet-Side';              methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+            methods(end+1).name = 'ResNet50-Side';            methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+            methods(end+1).name = 'COB_train-HED';            methods(end).io_func = @read_one_lep;      methods(end).legend = 'COB (VGGNet)';     methods(end).type = 'segmentation';
+            methods(end+1).name = 'COB_train-noglob-noorient';methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+            methods(end+1).name = 'COB_train-glob-noorient';  methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+            methods(end+1).name = 'COB_train-glob-orient';    methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+            methods(end+1).name = 'COB_train-noglob-orient';  methods(end).io_func = @read_one_lep;      methods(end).legend = methods(end).name;  methods(end).type = 'segmentation';
+        end
         
     case 'Pascal',
         gt_set   = 'Segmentation_val_2012';
@@ -176,21 +191,24 @@ for kk=1:length(measures)
             
             % Get all parameters for that method from file
             params = get_method_parameters(methods(ii).name);
-            
-            % Gather pre-computed results
-            if strcmp(database,'SBD'),
-                curr_meas = gather_measure(methods(ii).name,params,measures{kk},database,gt_set,cat_id);
-            else
-                curr_meas = gather_measure(methods(ii).name,params,measures{kk},database,gt_set);
+            try
+                % Gather pre-computed results
+                if strcmp(database,'SBD'),
+                    curr_meas = gather_measure(methods(ii).name,params,measures{kk},database,gt_set,cat_id);
+                else
+                    curr_meas = gather_measure(methods(ii).name,params,measures{kk},database,gt_set);
+                end
+                curr_ods  = general_ods(curr_meas);
+                curr_ois  = general_ois(curr_meas);
+                curr_ap   = general_ap(curr_meas);
+                % Plot method
+                display(['ODS: ' num2str(curr_ods.mean_value) ' OIS: ' num2str(curr_ois.mean_value) ' AP: ' num2str(curr_ap) ])
+                fig_handlers(end+1) = plot(curr_meas.mean_rec,curr_meas.mean_prec,[colors{ii} style],'LineWidth',1); %#ok<SAGROW>
+                plot(curr_ods.mean_rec,curr_ods.mean_prec,[colors{ii} '*'],'LineWidth',2)
+                legends{end+1} = ['[odsF:' sprintf('%0.3f',curr_ods.mean_value) ' oisF:' sprintf('%0.3f',curr_ois.mean_value) ' AP:' sprintf('%0.3f',curr_ap) '] ' methods(ii).legend ]; %#ok<SAGROW>
+            catch
+                methods(ii).name
             end
-            curr_ods  = general_ods(curr_meas);
-            curr_ois  = general_ois(curr_meas);
-            curr_ap   = general_ap(curr_meas);
-            % Plot method
-            display(['ODS: ' num2str(curr_ods.mean_value) ' OIS: ' num2str(curr_ois.mean_value) ' AP: ' num2str(curr_ap) ])
-            fig_handlers(end+1) = plot(curr_meas.mean_rec,curr_meas.mean_prec,[colors{ii} style],'LineWidth',1); %#ok<SAGROW>
-            plot(curr_ods.mean_rec,curr_ods.mean_prec,[colors{ii} '*'],'LineWidth',2)
-            legends{end+1} = ['[odsF:' sprintf('%0.3f',curr_ods.mean_value) ' oisF:' sprintf('%0.3f',curr_ois.mean_value) ' AP:' sprintf('%0.3f',curr_ap) '] ' methods(ii).legend ]; %#ok<SAGROW>
         end
     end
     

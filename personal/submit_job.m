@@ -1,11 +1,11 @@
 
 database = 'SBD';
 measure = 'fb';
-name = 'ResNet50-mod-pc_40000_clean';
+name = 'ResNet50-neg_500_40000_clean_soft';
 cat_ids = 1:20;
 
 if strcmp(database,'SBD'),
-    for i=5:5,%length(cat_ids),
+    for i=1:length(cat_ids),
         if ~exist(['parameters/' name '.txt'],'file'),
             copyfile('parameters/COB.txt',['parameters/' name '.txt']);
         end

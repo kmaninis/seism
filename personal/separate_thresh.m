@@ -6,7 +6,7 @@ gt_set = 'val';
 
 files = db_ids(database, gt_set);
 
-res_path = '/home/kmaninis/scratch/BoundaryDetectionResults/SBD/ResNet50-mod-pc_40000';
+res_path = '/home/kmaninis/scratch/BoundaryDetectionResults/SBD/ResNet50-neg_500_40000';
 
 for ii=1:length(categories),
     summ = zeros(length(files),1);
@@ -22,14 +22,9 @@ for ii=1:length(categories),
             tag(i)=1;
         end
         
-        summ(i) = sum(prob(:)>0.3);
+        summ(i) = sum(prob(:));
     end
     
-    % MdlLinear = fitcdiscr(summ,tag);
-    % K = MdlLinear.Coeffs(1,2).Const;
-    %
-    % tag_test = zeros(length(files),1);
-    % tag_test(summ>K+500)=1;
     
     p=zeros(length(files),1);r=p;f=p;
     for j=1:max(summ(:)),
@@ -42,7 +37,13 @@ for ii=1:length(categories),
     end
     [~,ind] = max(f);
     Fscores(ii) = f(ind)
-    GoldenThres(ii) = summ(ind)
+    GoldenThres(ii) = ind
 end
 
-save('thres.mat','Fscores','GoldenThres');
+save('personal/neg_thres_soft.mat','Fscores','GoldenThres');
+
+for ii=1:length(categories),
+   fid = fopen(['/scratch_net/reinhold/Kevis/cvl/publications/SemanticContours/data/' num2str(categories(ii)) '_tag_odsF.txt'],'w');
+   fprintf(fid,num2str(Fscores(ii),'%.2f'));
+   fclose(fid);
+end

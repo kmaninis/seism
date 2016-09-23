@@ -1,4 +1,4 @@
-db1 = 'SBD'; set1 = 'trainval'; 
-db2 = 'PASCALContext'; set2 = 'trainval_new';
+db1 = 'PASCALContext'; set1 = 'test_new'; 
+db2 = 'Pascal'; set2 = 'Segmentation_train_2012';
 
 [matches, numMatches] = searchMatches(db1,set1,db2,set2);

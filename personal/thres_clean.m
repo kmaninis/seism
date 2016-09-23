@@ -6,11 +6,11 @@ gt_set = 'val';
 
 files = db_ids(database, gt_set);
 
-res_path = '/home/kmaninis/scratch/BoundaryDetectionResults/SBD/ResNet50-mod-pc_40000';
-save_path = '/home/kmaninis/scratch/BoundaryDetectionResults/SBD/ResNet50-mod-pc_40000_clean';
-load('thres.mat');
+res_path = '/home/kmaninis/scratch/BoundaryDetectionResults/SBD/ResNet50-neg_500_40000';
+save_path = '/home/kmaninis/scratch/BoundaryDetectionResults/SBD/ResNet50-neg_500_40000_clean_soft';
+load('neg_thres_soft.mat');
 
-for ii=2:20,
+for ii=1:20,
     categories(ii)=ii;
     if ~exist(fullfile(save_path,num2str(categories(ii))),'dir'),
         mkdir(fullfile(save_path,num2str(categories(ii))));
@@ -20,7 +20,7 @@ for ii=2:20,
             display(['Processing image ' num2str(i) ' of ' num2str(length(files))]);
         end
         prob = im2double(imread(fullfile(res_path, num2str(categories(ii)), [files{i} '.png'])));
-        summ = sum(prob(:)>0.3);
+        summ = sum(prob(:));
         if summ>GoldenThres(categories(ii)),
             imwrite(prob,fullfile(save_path,num2str(categories(ii)),[files{i} '.png']));
         else
