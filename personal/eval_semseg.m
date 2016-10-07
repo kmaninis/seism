@@ -4,12 +4,12 @@
 clear all;close all;clc;
 
 % Select the database to work on
-database = 'Pascal';
+%  database = 'Pascal';
 % database = 'PASCALContext';
-% database = 'SBD';
+database = 'SBD';
 
 % Write results in format to use latex code?
-writePR = 0;
+writePR = 1;
 
 methods  = [];
 switch database,
@@ -19,9 +19,16 @@ switch database,
     case 'Pascal',
         gt_set   = 'Segmentation_val_2012';
         methods(end+1).name = 'CEDN-Sem'; methods(end).legend = methods(end).name;
+        methods(end+1).name = 'CEDN-Sem-weight'; methods(end).legend = methods(end).name;
     case 'SBD',
         gt_set   = 'val';
-        methods(end+1).name = 'COB';
+         methods(end+1).name = 'CEDN-Sem'; methods(end).legend = methods(end).name;
+         methods(end+1).name = 'CEDN-Sem-weight'; methods(end).legend = methods(end).name;
+         methods(end+1).name = 'DilatedConv'; methods(end).legend = methods(end).name;
+         methods(end+1).name = 'SnapCOBDil_0.05'; methods(end).legend = methods(end).name;
+         methods(end+1).name = 'SnapCOBDil_0.10'; methods(end).legend = methods(end).name;
+         methods(end+1).name = 'SnapCOBDil_0.20'; methods(end).legend = methods(end).name;
+         methods(end+1).name = 'SnapCOBDil_0.50'; methods(end).legend = methods(end).name;
     otherwise,
         error('Unknown name of the database');
 end
@@ -46,15 +53,16 @@ end
 for ii=1:length(methods),
     row_names{ii} = methods(ii).legend;
     IoUs(ii,:) = [res(ii).class_IoU' res(ii).mean_IoU];
+    legends{ii} = methods(ii).legend;
 end
 col_names = {'background' VOCopts.classes{:}}; col_names{end+1} =  'Mean';
 table_with_max_per_col(IoUs, row_names, col_names);
 
 %% Visualize results
 figure;
-bar(1:length(res(ii).class_IoU), res(ii).class_IoU');
+bar(1:length(res(ii).class_IoU), IoUs(:,1:end-1)');
 
 xlim([0 length(res(ii).class_IoU)+1]);
 xticklabel_rotate(1:length(res(ii).class_IoU),55,col_names(1:end-1),'interpreter','none');
-
+legend(legends)
 

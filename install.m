@@ -38,6 +38,7 @@ end
 addpath(seism_root);
 addpath(fullfile(seism_root,'lib'));
 addpath(genpath(fullfile(seism_root,'src')));
+addpath(genpath(fullfile(seism_root,'personal')));
 
 % Check the db_root_dir is set
 if ~exist(db_root_dir('BSDS500'),'dir')

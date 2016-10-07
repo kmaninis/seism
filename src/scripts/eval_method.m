@@ -1,11 +1,11 @@
 % function eval_method(method, parameter, measure, read_part_fun, database, gt_set, num_params, segm_or_contour)
-% ------------------------------------------------------------------------ 
+% ------------------------------------------------------------------------
 %  Copyright (C)
 %  Universitat Politecnica de Catalunya BarcelonaTech (UPC) - Spain
-% 
+%
 %  Jordi Pont-Tuset <jordi.pont@upc.edu>
 %  June 2013
-% ------------------------------------------------------------------------ 
+% ------------------------------------------------------------------------
 %  File part of the code 'segmentation_evaluation', from the paper:
 %
 %  Jordi Pont-Tuset, Ferran Marques,
@@ -27,9 +27,13 @@ if strcmp(database,'Pascal'),
     maxDist = 0.01;
 elseif strcmp(database,'SBD'),
     maxDist = 0.02;
-    kill_internal = 1;
+    kill_internal = 1; % I set it to 0 after Bertasius (BNF), Kokkinos (Ubernet) changed it.
     method_dir = fullfile(seism_root,'datasets',database,method,num2str(cat_ids));
-    res_dir    = fullfile(seism_root,'results' ,database,method,num2str(cat_ids));
+    if kill_internal,
+        res_dir    = fullfile(seism_root,'results' ,[database '_killintern'],method,num2str(cat_ids));
+    else
+        res_dir    = fullfile(seism_root,'results' ,database,method,num2str(cat_ids));
+    end
 else
     maxDist = 0.0075;
 end
@@ -67,10 +71,10 @@ end
 
 % Run on all images
 for ii=1:numel(im_ids)
-    % Display evolution      
+    % Display evolution
     % disp([num2str(ii) ' out of ' num2str(numel(im_ids))])
     curr_id = im_ids{ii};
-
+    
     % Read ground truth (gt_seg)
     lkup = [];
     if strcmp(database,'SBD'),
@@ -80,7 +84,7 @@ for ii=1:numel(im_ids)
     end
     % Read the partition
     partition_or_contour = read_part_fun(method_dir, parameter, num2str(curr_id));
-
+    
     % Check that we have the partition or contour
     if isempty(partition_or_contour)
         error(['Missing result ' num2str(curr_id) '_' parameter])

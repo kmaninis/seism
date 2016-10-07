@@ -46,9 +46,18 @@ for ii=1:length(im_ids)
     image_id = im_ids{ii};
     
     % ground truth label file
+    if strcmp(VOCopts.dataset,'Pascal'),
     gtfile = fullfile(db_root_dir(VOCopts.dataset), 'SegmentationClass', [image_id '.png']);
     [gtim,map] = imread(gtfile);    
     gtim = double(gtim);
+    elseif strcmp(VOCopts.dataset,'SBD'),
+       gtfile = fullfile(db_root_dir(VOCopts.dataset), 'cls', [image_id '.mat']);
+       gtim = load(gtfile,'GTcls');
+       gtim = double(gtim.GTcls.Segmentation);
+    else
+        %TODO: Interface everything
+        error('Unknown database');
+    end
     
     % results file
     resfile = sprintf(VOCopts.clsimgpath,method.name,image_id);

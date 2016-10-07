@@ -1,4 +1,4 @@
-function pr_curves_to_file(measures, database, gt_set, methods, cat_id, out_dir)
+function pr_curves_to_file(measures, database, gt_set, methods, cat_id, out_dir,kill_internal)
 
 if ~exist('measures','var'),
     measures = {'fb' ,... % Precision-recall for boundaries
@@ -23,6 +23,9 @@ if ~exist('database','var')||~exist('gt_set','var')||~exist('methods','var'),
     methods(end+1).name = 'QuadTree';methods(end).type = 'segmentation';
 end
 
+if ~exist('kill_internal','var'),
+    kill_internal = 0;
+end
 if ~exist('out_dir','var'),
     out_dir = fullfile(seism_root,'results','pr_curves',database);
 end
@@ -30,7 +33,7 @@ if ~exist(out_dir,'dir'),
     mkdir(out_dir);
 end
 metafix = '';
-
+%out_dir
 %% Write evertyhing to file
 for kk=1:length(measures)
     %% Write methods
@@ -45,7 +48,12 @@ for kk=1:length(measures)
         if exist(fullfile(out_dir, [database '_' gt_set '_' measures{kk} '_' methods(ii).name metafix '.txt']),'file'), continue;end
         % Gather pre-computed results
         if strcmp(database, 'SBD'),
-            curr_meas = gather_measure(methods(ii).name,params,measures{kk},database,gt_set,num2str(cat_id));
+            try
+                curr_meas = gather_measure(methods(ii).name,params,measures{kk},database,gt_set,num2str(cat_id),kill_internal);
+            catch
+                display(['Problem with gather_measure, method: ' methods(ii).name]);
+                continue;
+            end
         else
             curr_meas = gather_measure(methods(ii).name,params,measures{kk},database,gt_set);
         end

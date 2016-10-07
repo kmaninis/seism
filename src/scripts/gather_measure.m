@@ -1,31 +1,38 @@
-function stats = gather_measure(method, params, measure, database, gt_set, cat_id)
+function stats = gather_measure(method, params, measure, database, gt_set, cat_id, kill_internal)
 % stats = gather_measure(method, params, measure, gt_set)
-% ------------------------------------------------------------------------ 
+% ------------------------------------------------------------------------
 %  Copyright (C)
 %  Universitat Politecnica de Catalunya BarcelonaTech (UPC) - Spain
-% 
+%
 %  Jordi Pont-Tuset <jordi.pont@upc.edu>
 %  March 2011
-% ------------------------------------------------------------------------ 
+% ------------------------------------------------------------------------
 
+if nargin<7,
+    kill_internal = 0;
+end
 % Directory where results are stored
 if nargin<6,
     results_dir = fullfile(seism_root, 'results', database, method);
 else
-    results_dir = fullfile(seism_root, 'results', database, method,num2str(cat_id));
+    if kill_internal,
+        results_dir = fullfile(seism_root, 'results', [database '_killintern'], method,num2str(cat_id));
+    else
+        results_dir = fullfile(seism_root, 'results', database, method,num2str(cat_id));
+    end
 end
-  
+
 % Set of images considered according to gt_set ('test', 'val', 'train')
 image_idxs = db_ids(database,gt_set);
 
 % Get dimensions
 num_images = length(image_idxs);
 num_results = length(params);
-   
+
 % Allocate (distinguish precision-recall measures)
 if strcmp(measure, 'fb') || strcmp(measure, 'fop') || strcmp(measure, 'fr')
     stats.prec  = zeros(num_images, num_results);
-    stats.rec   = zeros(num_images, num_results);    
+    stats.rec   = zeros(num_images, num_results);
 end
 stats.values = zeros(num_images, num_results);
 
@@ -35,7 +42,7 @@ if strcmp(measure, 'fb')
     stats.sumR  = zeros(num_images, num_results);
     stats.cntP  = zeros(num_images, num_results);
     stats.sumP  = zeros(num_images, num_results);
-end 
+end
 
 % Scan all parameters
 for param_id = 1:num_results
@@ -63,7 +70,7 @@ if strcmp(measure, 'fb') || strcmp(measure, 'fop') || strcmp(measure, 'fr')
         sumR = sum(stats.sumR);
         cntP = sum(stats.cntP);
         sumP = sum(stats.sumP);
-      
+        
         % Allocate
         stats.mean_rec  = zeros(size(sumP));
         stats.mean_prec = zeros(size(sumP));
@@ -90,13 +97,13 @@ if strcmp(measure, 'fb') || strcmp(measure, 'fop') || strcmp(measure, 'fr')
         stats.mean_value((stats.mean_rec+stats.mean_prec)==0) = 0;
         stats.mean_value((stats.mean_rec+stats.mean_prec)~=0) = ...
             2*stats.mean_prec((stats.mean_rec+stats.mean_prec)~=0).*stats.mean_rec((stats.mean_rec+stats.mean_prec)~=0)...
-             ./(stats.mean_prec((stats.mean_rec+stats.mean_prec)~=0)+stats.mean_rec((stats.mean_rec+stats.mean_prec)~=0));
+            ./(stats.mean_prec((stats.mean_rec+stats.mean_prec)~=0)+stats.mean_rec((stats.mean_rec+stats.mean_prec)~=0));
     else
         stats.mean_value = 2*(stats.mean_prec.*stats.mean_rec)./(stats.mean_prec+stats.mean_rec);
     end
     % Check that there is no Nan in F
     if ~isempty(find(isnan(stats.mean_value), 1))
-         error('Not a Number found');
+        error('Not a Number found');
     end
 else
     stats.mean_value = mean(stats.values);
