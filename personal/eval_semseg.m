@@ -25,10 +25,10 @@ switch database,
          methods(end+1).name = 'CEDN-Sem'; methods(end).legend = methods(end).name;
          methods(end+1).name = 'CEDN-Sem-weight'; methods(end).legend = methods(end).name;
          methods(end+1).name = 'DilatedConv'; methods(end).legend = methods(end).name;
-         methods(end+1).name = 'SnapCOBDil_0.05'; methods(end).legend = methods(end).name;
+         %methods(end+1).name = 'SnapCOBDil_0.05'; methods(end).legend = methods(end).name;
          methods(end+1).name = 'SnapCOBDil_0.10'; methods(end).legend = methods(end).name;
-         methods(end+1).name = 'SnapCOBDil_0.20'; methods(end).legend = methods(end).name;
-         methods(end+1).name = 'SnapCOBDil_0.50'; methods(end).legend = methods(end).name;
+         %methods(end+1).name = 'SnapCOBDil_0.20'; methods(end).legend = methods(end).name;
+         %methods(end+1).name = 'SnapCOBDil_0.50'; methods(end).legend = methods(end).name;
     otherwise,
         error('Unknown name of the database');
 end

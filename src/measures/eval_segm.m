@@ -83,12 +83,12 @@ end
 
 if strcmp(measure,'fb')
     contours = seg2bmap(partition);
-    if kill_internal,
-        if isempty(lkup),
+    if kill_internal
+        if isempty(lkup)
             error('Look Up table for classes/instances not provided');
         else
-            for ii=1 : length(unique(ground_truth{1}))-1,
-                if lkup(ii,2)>0,
+            for ii=1 : length(unique(ground_truth{1}))-1
+                if lkup(ii,2)>0
                     mask = (ground_truth{1}==ii);
                     gt_bdry = seg2bmap(mask);
                     contours = kill_internal_bdries(contours, gt_bdry, mask, maxDist);

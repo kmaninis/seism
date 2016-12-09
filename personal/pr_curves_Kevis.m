@@ -43,12 +43,12 @@
 %clear all;close all;clc;
 
 
-%database = 'BSDS500';
-database = 'PASCALContext';
+database = 'BSDS500';
+%database = 'PASCALContext';
 %database = 'Pascal';
 %database = 'SBD';
 
-writePR = 1; % Write results in format to use latex code?
+writePR = 0; % Write results in format to use latex code?
 USEprecomputed = 1; % Use precomputed results or evaluate on your computer?
 
 % Precision-recall measures
@@ -66,13 +66,13 @@ switch database,
         %         methods(end+1).name = 'ResNet50_iter_15000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         % 		methods(end+1).name = 'ResNet50_iter_20000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         methods(end+1).name = 'CEDN';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-        % 		methods(end+1).name = 'ResNet50_iter_30000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-        %         methods(end+1).name = 'ResNet50_iter_35000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-        % 		methods(end+1).name = 'ResNet50_iter_40000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-        %         methods(end+1).name = 'ResNet50_iter_45000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-        % 		methods(end+1).name = 'ResNet50_iter_50000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-        %         methods(end+1).name = 'ResNet50_iter_55000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-        %         methods(end+1).name = 'ResNet50_iter_60000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+        		methods(end+1).name = 'ResNet50_iter_30000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+                methods(end+1).name = 'ResNet50_iter_35000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+        		methods(end+1).name = 'ResNet50_iter_40000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+                methods(end+1).name = 'ResNet50_iter_45000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+        		methods(end+1).name = 'ResNet50_iter_50000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+                methods(end+1).name = 'ResNet50_iter_55000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+                methods(end+1).name = 'ResNet50_iter_60000';            methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         methods(end+1).name = 'COB';            methods(end).io_func = @read_one_ucm; methods(end).legend = 'COB'; methods(end).type = 'segmentation';
         
         %% Old methods...

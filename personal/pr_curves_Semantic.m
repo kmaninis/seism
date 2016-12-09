@@ -7,7 +7,7 @@
 %database = 'Pascal';
 database = 'SBD';
 
-writePR = 1; % Write results in format to use latex code?
+writePR = 0; % Write results in format to use latex code?
 USEprecomputed = 1; % Use precomputed results or evaluate on your computer?
 
 % Precision-recall measures
@@ -15,8 +15,8 @@ measures = {'fb'};
 
 % Define all methods to be compared
 methods  = [];
-switch database,
-    case 'SBD',
+switch database
+    case 'SBD'
         gt_set   = 'val';
         cat_id = 1:20;
         kill_internal = 1;
@@ -45,7 +45,7 @@ switch database,
         methods(end+1).name = 'Khoreva';             methods(end).io_func = @read_one_cont_png;  methods(end).legend = methods(end).name;  methods(end).type = 'contour';
         methods(end+1).name = 'Bharath';             methods(end).io_func = @read_one_cont_png;  methods(end).legend = methods(end).name;  methods(end).type = 'contour';
         %methods(end+1).name = 'COB';             methods(end).io_func = @read_one_ucm;       methods(end).legend = 'COB';              methods(end).type = 'segmentation';
-    otherwise,
+    otherwise
         error('Unknown name of the database');
 end
 
@@ -55,13 +55,13 @@ colors = {'b','g','r','k','m','c','y','b','g','r','k','m','c','y','k','g','b','g
 %% Evaluate your method (just once for all parameters)
 
 % % Evaluate using the correct reading function
-if ~USEprecomputed,
+if ~USEprecomputed
     for ii=1:length(measures)
         for jj=1:length(methods)
             % Contours only in 'fb'
             is_cont = strcmp(methods(ii).type,'contour');
             if strcmp(measures{ii},'fb') || ~is_cont
-                if exist('cat_id','var'),
+                if exist('cat_id','var')
                     eval_method_all_params(methods(jj).name, measures{ii}, methods(jj).io_func, database, gt_set, is_cont,cat_id);
                 else
                     eval_method_all_params(methods(jj).name, measures{ii}, methods(jj).io_func, database, gt_set, is_cont);
@@ -77,7 +77,7 @@ end
 %% Plot PR curves
 addpath(genpath('src'));
 figure('units','normalized','outerposition',[0 0 1 1])
-for ll=cat_id,
+for ll=cat_id
     subplottight(4,5,ll),
     hold on;for F = 0.1:0.1:0.9,iso_f_plot(F);end;axis square;
     % iso_f_axis([measures{kk} '_' num2str(ll)])

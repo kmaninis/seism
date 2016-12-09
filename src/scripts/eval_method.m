@@ -23,17 +23,19 @@ method_dir = fullfile(seism_root,'datasets',database,method);
 res_dir    = fullfile(seism_root,'results' ,database,method);
 
 kill_internal = 0;
-if strcmp(database,'Pascal'),
+if strcmp(database,'Pascal')
     maxDist = 0.01;
-elseif strcmp(database,'SBD'),
+elseif strcmp(database,'SBD')
     maxDist = 0.02;
     kill_internal = 1; % I set it to 0 after Bertasius (BNF), Kokkinos (Ubernet) changed it.
     method_dir = fullfile(seism_root,'datasets',database,method,num2str(cat_ids));
-    if kill_internal,
+    if kill_internal
         res_dir    = fullfile(seism_root,'results' ,[database '_killintern'],method,num2str(cat_ids));
     else
         res_dir    = fullfile(seism_root,'results' ,database,method,num2str(cat_ids));
     end
+elseif strcmp(database,'NYUD-v2')
+    maxDist = 0.011
 else
     maxDist = 0.0075;
 end
@@ -77,7 +79,7 @@ for ii=1:numel(im_ids)
     
     % Read ground truth (gt_seg)
     lkup = [];
-    if strcmp(database,'SBD'),
+    if strcmp(database,'SBD')
         [gt_seg,~,~,~,lkup] = db_gt(database,curr_id,'cls',cat_ids);
     else
         gt_seg = db_gt(database,curr_id);

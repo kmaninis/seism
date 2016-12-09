@@ -13,10 +13,10 @@
 % ------------------------------------------------------------------------
 function [ground_truth, gt_set, im, anns, matches_lookup] = db_gt( database, image_id, ptype, cat_ids )
 
-if nargin<3,
+if nargin<3
     ptype = 'inst'; % Instance partitions by default, 'cls' for class.
 end
-if nargin<4,
+if nargin<4
     cat_ids = 1:20; % All categories by default
 end
 
@@ -30,11 +30,11 @@ if strcmp(database,'Pascal')
     % Load Object and Class ground truth
     gt_cls  = imread(fullfile(db_root_dir(database), 'SegmentationClass', [image_id '.png']));
     gt = zeros(size(gt_cls));
-    if strcmp(ptype,'cls'),
-        for i=1:length(cat_ids),
+    if strcmp(ptype,'cls')
+        for i=1:length(cat_ids)
             gt(gt_cls==cat_ids(i)) = cat_ids(i);
         end
-    elseif strcmp(ptype,'inst'),
+    elseif strcmp(ptype,'inst')
         gt_inst = imread(fullfile(db_root_dir(database), 'SegmentationObject', [image_id '.png']));
         obj_ids   = unique(gt_inst);
         obj_ids(obj_ids==0) = [];
@@ -42,7 +42,7 @@ if strcmp(database,'Pascal')
         for ii=1:length(obj_ids)
             mask   = (gt_inst==obj_ids(ii));
             category = gt_cls(find(mask==1,1,'first'));
-            if ismember(category,cat_ids),
+            if ismember(category,cat_ids)
                 gt(gt_inst==obj_ids(ii))=ii;
             end
         end
@@ -53,25 +53,25 @@ elseif strcmp(database,'SBD')
     gt_cls = loadvar(fullfile(db_root_dir(database), 'cls', [image_id '.mat']),'GTcls');
     gt = zeros(size(gt_cls.Segmentation));
     
-    if strcmp(ptype,'inst'),
+    if strcmp(ptype,'inst')
         gt_inst= loadvar(fullfile(db_root_dir(database), 'inst', [image_id '.mat']),'GTinst');
         obj_num = length(gt_inst.Boundaries);
         for ii=1:obj_num
             mask   = (gt_inst.Segmentation==ii);
             category = gt_cls.Segmentation(find(mask==1,1,'first'));
-            if ismember(category,cat_ids),
+            if ismember(category,cat_ids)
                 gt(gt_inst.Segmentation==ii)=ii;
             end
         end
-    elseif strcmp(ptype, 'cls'),
-        for i=1:length(cat_ids),
+    elseif strcmp(ptype, 'cls')
+        for i=1:length(cat_ids)
             gt(gt_cls.Segmentation==cat_ids(i)) = cat_ids(i);
         end
     else
         error('Something went wrong. Check curr_eval.');
     end
     gt = relabel(gt);
-    for ii=1:length(unique(gt)),
+    for ii=1:length(unique(gt))
         mask   = (gt==ii);
         category = gt_cls.Segmentation(find(mask==1,1,'first'));
         matches_lookup(ii,1:2) = [ii, category]; % Store Segment - Category labels
@@ -190,6 +190,10 @@ elseif strcmp(database,'BSDS500')
     end
 elseif strcmp(database,'PASCALContext')
     gt = loadvar(fullfile(db_root_dir(database), 'trainval', [image_id '.mat']),'LabelMap');
+    ground_truth = {relabel(uint32(gt))};
+elseif strcmp(database,'NYUD-v2')
+    gt = loadvar(fullfile(db_root_dir(database), 'groundTruth', [image_id '.mat']),'groundTruth');
+    gt = gt{1}.Segmentation;
     ground_truth = {relabel(uint32(gt))};
 else
     error(['Ground truth not implemented for: ' database]);

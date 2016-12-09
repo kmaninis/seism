@@ -83,6 +83,8 @@ elif database == 'SBD':
 	else:
 		print 'category id not defined: Evaluating default category Person'
 		cat_id='15'
+elif database == 'NYUD-v2':
+	gt_set = 'test'
 else:
 	print "ERROR: Unknown database"
 	exit(1)
