@@ -12,7 +12,7 @@
 % the unnormalised confusion matrix, which contains raw pixel counts.
 function [accuracies,avacc,conf,rawcounts] = VOCevalseg(VOCopts,method)
 
-if exist(fullfile(VOCopts.resrootdir,[VOCopts.dataset '_' VOCopts.gt_set '_' method.name '_classIoU.txt']),'file'),
+if exist(fullfile(VOCopts.resrootdir,[VOCopts.dataset '_' VOCopts.gt_set '_' method.name '_classIoU.txt']),'file')
     temp_data = importdata(fullfile(VOCopts.resrootdir,[VOCopts.dataset '_' VOCopts.gt_set '_' method.name '_classIoU.txt']));
     accuracies = temp_data.data;
     
@@ -46,11 +46,11 @@ for ii=1:length(im_ids)
     image_id = im_ids{ii};
     
     % ground truth label file
-    if strcmp(VOCopts.dataset,'Pascal'),
+    if strcmp(VOCopts.dataset,'Pascal')
     gtfile = fullfile(db_root_dir(VOCopts.dataset), 'SegmentationClass', [image_id '.png']);
     [gtim,map] = imread(gtfile);    
     gtim = double(gtim);
-    elseif strcmp(VOCopts.dataset,'SBD'),
+    elseif strcmp(VOCopts.dataset,'SBD')
        gtfile = fullfile(db_root_dir(VOCopts.dataset), 'cls', [image_id '.mat']);
        gtim = load(gtfile,'GTcls');
        gtim = double(gtim.GTcls.Segmentation);

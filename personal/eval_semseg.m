@@ -1,35 +1,37 @@
 %% Semantic Segmentation Evaluation
 
 %% Experiments parameters
-clear all;close all;clc;
+clear;close all;clc;
 
 % Select the database to work on
-%  database = 'Pascal';
+  database = 'Pascal';
 % database = 'PASCALContext';
-database = 'SBD';
+% database = 'SBD';
 
 % Write results in format to use latex code?
 writePR = 1;
 
 methods  = [];
-switch database,
-    case 'PASCALContext',
+switch database
+    case 'PASCALContext'
         gt_set   = 'test_new';
         methods(end+1).name = 'COB';
-    case 'Pascal',
+    case 'Pascal'
         gt_set   = 'Segmentation_val_2012';
-        methods(end+1).name = 'CEDN-Sem'; methods(end).legend = methods(end).name;
-        methods(end+1).name = 'CEDN-Sem-weight'; methods(end).legend = methods(end).name;
-    case 'SBD',
+        methods(end+1).name = 'DilatedConv'; methods(end).legend = methods(end).name;
+        methods(end+1).name = 'DilatedConv'; methods(end).legend = methods(end).name;
+        methods(end+1).name = 'PSPNet'; methods(end).legend = methods(end).name;
+        methods(end+1).name = 'SnapPSPNet_0.10'; methods(end).legend = methods(end).name;
+    case 'SBD'
         gt_set   = 'val';
          methods(end+1).name = 'CEDN-Sem'; methods(end).legend = methods(end).name;
          methods(end+1).name = 'CEDN-Sem-weight'; methods(end).legend = methods(end).name;
          methods(end+1).name = 'DilatedConv'; methods(end).legend = methods(end).name;
-         %methods(end+1).name = 'SnapCOBDil_0.05'; methods(end).legend = methods(end).name;
-         methods(end+1).name = 'SnapCOBDil_0.10'; methods(end).legend = methods(end).name;
-         %methods(end+1).name = 'SnapCOBDil_0.20'; methods(end).legend = methods(end).name;
-         %methods(end+1).name = 'SnapCOBDil_0.50'; methods(end).legend = methods(end).name;
-    otherwise,
+         methods(end+1).name = 'SnapCOBDil_0.10'; methods(end).legend = 'SnapCOBDil';
+         methods(end+1).name = 'PSPNet'; methods(end).legend = methods(end).name;
+         methods(end+1).name = 'SnapCOBPSPNet_0.10'; methods(end).legend = methods(end).name;
+
+    otherwise
         error('Unknown name of the database');
 end
 
@@ -42,7 +44,7 @@ for ii=1:length(methods)
     [res(ii).class_IoU,res(ii).mean_IoU,res(ii).conf,ress(ii).rawcounts] = VOCevalseg(VOCopts,methods(ii));
     
     %Write the results for LaTeX processing
-    if writePR,
+    if writePR
         save_semseg_res(VOCopts, methods(ii).name, res(ii));
     end
 end
@@ -50,7 +52,7 @@ end
 
 
 %% Generate LaTeX tables
-for ii=1:length(methods),
+for ii=1:length(methods)
     row_names{ii} = methods(ii).legend;
     IoUs(ii,:) = [res(ii).class_IoU' res(ii).mean_IoU];
     legends{ii} = methods(ii).legend;

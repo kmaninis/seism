@@ -44,10 +44,10 @@
 close all;clc;
 
 % Select the database to work on
-database = 'BSDS500';
+% database = 'BSDS500';
 % database = 'NYUD-v2';
 % database = 'PASCALContext';
-% database = 'Pascal';
+database = 'Pascal';
 % database = 'SBD';
 
 % Write results in format to use latex code?
@@ -107,17 +107,17 @@ switch database
         methods(end+1).name = 'COB';             methods(end).io_func = @read_one_ucm;      methods(end).legend = methods(end).name; methods(end).type = 'segmentation';
     case 'NYUD-v2'
         gt_set   = 'test';
-                methods(end+1).name = 'SE';             methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-                 methods(end+1).name = 'SE-all';             methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+        methods(end+1).name = 'SE';             methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+        methods(end+1).name = 'SE-all';             methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
         methods(end+1).name = 'COB';                    methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'segmentation';
-         methods(end+1).name = 'MCG';                    methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'segmentation';
+        methods(end+1).name = 'MCG';                    methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'segmentation';
         methods(end+1).name = 'COB-rgbHHA';             methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'segmentation';
         %         methods(end+1).name = 'COB-PC';        methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'segmentation';
-%                  methods(end+1).name = 'HHA';        methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'segmentation';
+        %                  methods(end+1).name = 'HHA';        methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'segmentation';
         %         methods(end+1).name = 'HED-precomputed';        methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-%         methods(end+1).name = 'ResNet50_nyud_rgb';      methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-%         methods(end+1).name = 'ResNet50_nyud_rgbHHA';   methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
-%         methods(end+1).name = 'ResNet50_nyud_rgbd';     methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour'; 
+        %         methods(end+1).name = 'ResNet50_nyud_rgb';      methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+        %         methods(end+1).name = 'ResNet50_nyud_rgbHHA';   methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
+        %         methods(end+1).name = 'ResNet50_nyud_rgbd';     methods(end).io_func = @read_one_cont_png; methods(end).legend = methods(end).name; methods(end).type = 'contour';
     otherwise
         error('Unknown name of the database');
 end
@@ -133,7 +133,7 @@ if ~USEprecomputed
     for ii=1:length(measures)
         for jj=1:length(methods)
             % Contours only in 'fb'
-            is_cont = strcmp(methods(ii).type,'contour');
+            is_cont = strcmp(methods(jj).type,'contour');
             if strcmp(measures{ii},'fb') || ~is_cont
                 if exist('cat_id','var')
                     eval_method_all_params(methods(jj).name, measures{ii}, methods(jj).io_func, database, gt_set, is_cont, cat_id);

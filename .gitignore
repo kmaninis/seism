@@ -1,3 +1,5 @@
 datasets
 results/*
 parameters/*
+results_semseg/*
+datasets_semseg/*
